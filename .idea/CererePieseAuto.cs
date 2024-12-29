@@ -18,7 +18,7 @@ public class CererePieseAuto
 	public void FinalizeazaCerere()
     {
         Status = StatusCererePiese.Finalizat;
-        Console.WriteLine($"Cererea de piese {Avb} a fost finalizată.");
+        Console.WriteLine($"Cererea de piese {Avb} a fost finalizata.");
     }
 
     public override string ToString()

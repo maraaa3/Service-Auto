@@ -25,7 +25,7 @@ public class CerereRezolvare
         if (Status == StatusCerere.InPreluare)
         {
             MecanicResponsabil = numeMecanic;
-            Status = StatusCerere.Investigare; // Actualizăm starea
+            Status = StatusCerere.Investigare; // Actualizam starea
             Console.WriteLine($"Cererea {CodUnic} a fost alocată mecanicului {numeMecanic}.");
         }
         else
