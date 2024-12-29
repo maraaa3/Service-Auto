@@ -17,8 +17,15 @@ public class CererePieseAuto
 
 	public void FinalizeazaCerere()
     {
-        Status = StatusCererePiese.Finalizat;
-        Console.WriteLine($"Cererea de piese {Avb} a fost finalizata.");
+         if (Status == StatusPiese.InAsteptare) // Verificam daca cererea este in asteptare
+        {
+            Status = StatusPiese.Finalizat;
+            Console.WriteLine($"Cererea de piese {Avb} a fost finalizata.");
+        }
+        else
+        {
+            Console.WriteLine($"Cererea de piese {Avb} nu poate fi finalizata deoarece nu este în asteptare.");
+        }
     }
 
     public override string ToString()

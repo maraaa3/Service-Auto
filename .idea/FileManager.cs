@@ -62,5 +62,19 @@ public void IncarcaCereriRezolvare()
     _cereriRezolvare = _cereriRezolvareFileManager.LoadFromFile<CerereRezolvare>();
 }//cred
 
+	private List<CererePieseAuto> _cereriPieseAuto = new List<CererePieseAuto>();
+
+    public void SalveazaCereriPieseAuto()
+    {
+        var fileManager = new FileManager("cereri_piese_auto.json");
+        fileManager.SaveToFile(_cereriPieseAuto);
+    }
+
+    // Încarcă cererile de piese auto
+    public void IncarcaCereriPieseAuto()
+    {
+        var fileManager = new FileManager("cereri_piese_auto.json");
+        _cereriPieseAuto = fileManager.LoadFromFile<CererePieseAuto>();
+    }
     //SA FAC IN PROGRAM FISIERE PT FIECARE
 }

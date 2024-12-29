@@ -11,7 +11,11 @@ public class CerereRezolvare
     public List<CererePieseAuto> CereriPiese { get; set; }
 
     public CerereRezolvare(string codUnic, string numeClient, string numarMasina, string descriereProblema)
-    {
+    {   
+        if (!IsValidNumarMasina(numarMasina))
+        {
+            throw new ArgumentException("Numarul de mașină nu este valid.Trebuie sa contina 7 caractere!!");
+        }
         CodUnic = codUnic;
         NumeClient = numeClient;
         NumarMasina = numarMasina;
@@ -19,6 +23,12 @@ public class CerereRezolvare
         Status = StatusCerere.InPreluare;
         MecanicResponsabil = null; //ii pe null pana cand cnv preia comanda
         CereriPiese = new List<CererePieseAuto>();
+    }
+    
+    private bool IsValidNumarMasina(string numarMasina)
+    {
+        // Exemplu de validare simpla: numarul masinii trebuie sa ca aiba exact 7 caractere
+        return numarMasina.Length == 7;
     }
     public void AsociazaMecanic(string numeMecanic)
     {
@@ -30,7 +40,7 @@ public class CerereRezolvare
         }
         else
         {
-            Console.WriteLine("Cererea nu poate fi alocată. Verificați starea.");
+            Console.WriteLine("Cererea nu poate fi alocata. Verificati starea.");
         }
     }
     
@@ -38,7 +48,7 @@ public class CerereRezolvare
     {
         CereriPiese.Add(cerere);
         Status = StatusCerere.AsteptarePiese;
-        Console.WriteLine($"Cererea pentru piese {cerere.Avb} a fost adăugată.");
+        Console.WriteLine($"Cererea pentru piese {cerere.Avb} a fost adaugata.");
     }
     
     public void RezolvaProblema(bool necesitaPiese)
