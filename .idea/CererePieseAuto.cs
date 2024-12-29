@@ -15,6 +15,12 @@ public class CererePieseAuto
         Status = StatusPiese.InAsteptare;
     }
 
+	public void FinalizeazaCerere()
+    {
+        Status = StatusCererePiese.Finalizat;
+        Console.WriteLine($"Cererea de piese {Avb} a fost finalizată.");
+    }
+
     public override string ToString()
     {
         return $"[AVB: {Avb}] {NumeUtilizator} - {Detalii} (Status: {Status})";

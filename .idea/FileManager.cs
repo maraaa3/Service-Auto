@@ -48,6 +48,19 @@ public class FileManager
             return new List<T>();
         }
     }
-    
+private readonly FileManager _cereriRezolvareFileManager = new FileManager("cereri_rezolvare.json");
+
+public void SalveazaCereriRezolvare()
+{
+    _cereriRezolvareFileManager.SaveToFile(_cereriRezolvare);
+} //cred
+
+private List<CerereRezolvare> _cereriRezolvare = new List<CerereRezolvare>();
+
+public void IncarcaCereriRezolvare()
+{
+    _cereriRezolvare = _cereriRezolvareFileManager.LoadFromFile<CerereRezolvare>();
+}//cred
+
     //SA FAC IN PROGRAM FISIERE PT FIECARE
 }
