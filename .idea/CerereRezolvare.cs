@@ -55,7 +55,7 @@ public class CerereRezolvare
     {
         if (necesitaPiese)
         {
-            if (CereriPiese.All(c => c.Status == StatusCerere.Finalizat)) // Toate piesele sunt disponibile
+            if (CereriPiese.All(c => c.Status == StatusPiese.Finalizat)) // Toate piesele sunt disponibile
             {
                 Status = StatusCerere.Finalizat;
                 Console.WriteLine($"Cererea {CodUnic} a fost rezolvată cu succes de mecanicul {MecanicResponsabil}.");
