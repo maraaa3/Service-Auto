@@ -3,15 +3,44 @@ namespace DefaultNamespace;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
+
 
 public class FileManager
 {
     private readonly string _filePath;
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
 
     public FileManager(string filePath)
     {
         _filePath = filePath;
+
+        _jsonSerializerOptions = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            TypeInfoResolver = new DefaultJsonTypeInfoResolver
+            {
+                Modifiers =
+                    {
+                        p =>
+                        {
+                            if(p.Type == typeof(Utilizator))
+                            {
+                                p.PolymorphismOptions = new JsonPolymorphismOptions
+                                {
+                                    TypeDiscriminatorPropertyName = "$type",
+                                    DerivedTypes =
+                                    {
+                                        new JsonDerivedType(typeof(Administrator), "administrator"),
+                                        new JsonDerivedType(typeof(Mecanic), "mecanic")
+                                    }
+                                };
+                            }
+                        }
+                        }
+            }
+        };
     }
 
     
@@ -19,7 +48,7 @@ public class FileManager
     {
         try
         {
-            string jsonString = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+            string jsonString = JsonSerializer.Serialize(data, _jsonSerializerOptions);
             File.WriteAllText(_filePath, jsonString);
             Console.WriteLine("Datele au fost salvate cu succes.");
         }
@@ -40,7 +69,7 @@ public class FileManager
             }
 
             string jsonString = File.ReadAllText(_filePath);
-            return JsonSerializer.Deserialize<List<T>>(jsonString) ?? new List<T>();
+           return JsonSerializer.Deserialize<List<T>>(jsonString, _jsonSerializerOptions) ?? new List<T>();
         }
         catch (Exception ex)
         {
@@ -48,7 +77,7 @@ public class FileManager
             return new List<T>();
         }
     }
-private readonly FileManager _cereriRezolvareFileManager = new FileManager("cereri_rezolvare.json");
+/*private readonly FileManager _cereriRezolvareFileManager = new FileManager("cereri_rezolvare.json");
 
 public void SalveazaCereriRezolvare()
 {
@@ -76,5 +105,5 @@ public void IncarcaCereriRezolvare()
         var fileManager = new FileManager("cereri_piese_auto.json");
         _cereriPieseAuto = fileManager.LoadFromFile<CererePieseAuto>();
     }
-    //SA FAC IN PROGRAM FISIERE PT FIECARE
+    //SA FAC IN PROGRAM FISIERE PT FIECARE*/
 }
