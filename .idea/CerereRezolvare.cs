@@ -2,28 +2,22 @@ namespace DefaultNamespace;
 
 public class CerereRezolvare
 {
-    public string CodUnic { get; set; }
-    public string NumeClient { get; set; }
-    public string NumarMasina { get; set; }
-    public string DescriereProblema { get; set; }
-    public StatusCerere Status { get; set; }
-    public string MecanicResponsabil { get; set; }
-    public List<CererePieseAuto> CereriPiese { get; set; }
-
-    public CerereRezolvare(string codUnic, string numeClient, string numarMasina, string descriereProblema)
-    {   
-        if (!IsValidNumarMasina(numarMasina))
-        {
-            throw new ArgumentException("Numarul de mașină nu este valid.Trebuie sa contina 7 caractere!!");
-        }
-        CodUnic = codUnic;
-        NumeClient = numeClient;
-        NumarMasina = numarMasina;
-        DescriereProblema = descriereProblema;
-        Status = StatusCerere.InPreluare;
-        MecanicResponsabil = null; //ii pe null pana cand cnv preia comanda
-        CereriPiese = new List<CererePieseAuto>();
-    }
+      public string CodCerere { get; set; }
+      public string NumePersoana { get; set; }
+      public string NumarMasina { get; set; }
+      public string DescriereProblema { get; set; }
+      public StatusCerere Status { get; set; }
+      public string RezolvatDe { get; set; }
+      public CerereRezolvare(string codCerere, string numePersoana, string numarMasina, string descriereProblema, StatusCerere status)
+      {
+          CodCerere = codCerere;
+          NumePersoana = numePersoana;
+          NumarMasina = numarMasina;
+          DescriereProblema = descriereProblema;
+          Status = status;
+          RezolvatDe = null;
+      }
+  }
     
    /* private bool IsValidNumarMasina(string numarMasina)
     {
@@ -77,4 +71,3 @@ public class CerereRezolvare
     {
         return $"[{CodUnic}] {NumeClient} - {NumarMasina} - {DescriereProblema} (Status: {Status})";
     }*/
-}
