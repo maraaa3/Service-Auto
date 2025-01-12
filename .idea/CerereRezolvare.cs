@@ -25,7 +25,7 @@ public class CerereRezolvare
         CereriPiese = new List<CererePieseAuto>();
     }
     
-    private bool IsValidNumarMasina(string numarMasina)
+   /* private bool IsValidNumarMasina(string numarMasina)
     {
         // Exemplu de validare simpla: numarul masinii trebuie sa ca aiba exact 7 caractere
         return numarMasina.Length == 7;
@@ -76,5 +76,5 @@ public class CerereRezolvare
     public override string ToString()
     {
         return $"[{CodUnic}] {NumeClient} - {NumarMasina} - {DescriereProblema} (Status: {Status})";
-    }
+    }*/
 }
