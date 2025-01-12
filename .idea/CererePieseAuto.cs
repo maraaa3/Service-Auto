@@ -2,20 +2,18 @@ namespace DefaultNamespace;
 
 public class CererePieseAuto
 {
-    public int Avb { get; set; }
+    public string CodCerere { get; set; }
     public string NumeUtilizator { get; set; }
-    public string Detalii { get; set; }
     public StatusPiese Status { get; set; }
 
-    public CererePieseAuto(int avb, string numeUtilizator, string detalii)
+    public CererePieseAuto(string codCerere, string numeUtilizator, StatusPiese status)
     {
-        Avb = avb;
+        CodCerere = codCerere;
         NumeUtilizator = numeUtilizator;
-        Detalii = detalii;
-        Status = StatusPiese.InAsteptare;
+        Status = status;
     }
 
-	public void FinalizeazaCerere()
+	/*public void FinalizeazaCerere()
     {
          if (Status == StatusPiese.InAsteptare) // Verificam daca cererea este in asteptare
         {
@@ -31,5 +29,5 @@ public class CererePieseAuto
     public override string ToString()
     {
         return $"[AVB: {Avb}] {NumeUtilizator} - {Detalii} (Status: {Status})";
-    }
+    }*/
 }
