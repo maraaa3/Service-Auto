@@ -61,4 +61,4 @@ public class Administrator : Utilizator
         cereri.Add(cerere);
         _logger.LogInformation("Cererea a fost adaugata.");
     }
-}}
+}
