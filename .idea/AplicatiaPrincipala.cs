@@ -49,6 +49,8 @@ using System.Collections.Generic;
 
                     case "3":
                         SalvareUtilizatori();
+                        SalvareCereriRezolvare();
+                        SalvareCereriPieseAuto();
                         _logger.LogInformation("Iesire program. La revedere!");
                         running = false;
                         break;
@@ -130,7 +132,8 @@ using System.Collections.Generic;
                         break;
 
                     case "5":
-                        admin.AdaugaCerereRezolvare(cereriRezolvare);
+                        //admin.AdaugaCerereRezolvare(cereriRezolvare);
+                        FaCerere(admin);
                         break;
 
                     case "6":
@@ -203,6 +206,7 @@ using System.Collections.Generic;
                 // Administratorul preia cererea și o procesează
                 cererePiese.Status = StatusPiese.InAsteptare;
                 _logger.LogInformation($"Comanda de piese auto cu codul {cererePiese.CodCerere} a fost preluata si comandata.");
+                SalvareCereriPieseAuto();
             }
             else
             {
@@ -237,6 +241,7 @@ using System.Collections.Generic;
                     // Actualizăm cererea de rezolvare la statusul 'Finalizat'
                     cerereRezolvare.Status = StatusCerere.Finalizat;
                     _logger.LogInformation($"Comanda de piese cu codul {cererePiese.CodCerere} a fost finalizata.");
+                    SalvareCereriPieseAuto();
                 }
                 else
                 {
@@ -260,7 +265,7 @@ using System.Collections.Generic;
 
             if (cerere != null)
             {
-                Console.WriteLine($"Cererea {cerere.CodCerere} este în stadiul 'Investigare'.");
+                _logger.LogInformation($"Cererea {cerere.CodCerere} este în stadiul 'Investigare'.");
 
                 // Întrebare pentru a verifica dacă sunt necesare piese auto
                 Console.Write("Este necesara comandarea pieselor? (da/nu): ");
@@ -277,22 +282,30 @@ using System.Collections.Generic;
 
                     // Actualizez cererea de rezolvare la stadiul 'AsteptarePiese'
                     cerere.Status = StatusCerere.AsteptarePiese;
-                    Console.WriteLine($"Cererea {cerere.CodCerere} a fost actualizată la stadiul 'Asteptare Piese'.");
+                    _logger.LogInformation($"Cererea {cerere.CodCerere} a fost actualizată la stadiul 'Asteptare Piese'.");
+                    SalvareCereriPieseAuto();
+                    SalvareCereriRezolvare();
                 }
+                
                 else if (raspuns == "nu")
                 {
                     // Daca nu sunt necesare piese, finalizam cererea
                     cerere.Status = StatusCerere.Finalizat;
-                    Console.WriteLine($"Cererea {cerere.CodCerere} a fost finalizata fara comanda de piese.");
+                    Console.Write("Introduceti numele mecanicului care rezolva cererea: ");
+                    string numeMecanic = Console.ReadLine();
+            
+                    cerere.RezolvatDe = numeMecanic;
+                    _logger.LogInformation($"Problema masinii cu codul cererii {cerere.CodCerere} a fost rezolvata de {numeMecanic}, fara a mai comanda piese.");
+                    SalvareCereriRezolvare();
                 }
                 else
                 {
-                    Console.WriteLine("Raspuns invalid! Va rugam să răspundeti cu 'da' sau 'nu'.");
+                    _logger.LogError("Raspuns invalid! Va rugam să răspundeti cu 'da' sau 'nu'.");
                 }
             }
             else
             {
-                Console.WriteLine("Nu exista cereri în stadiul 'Investigare' cu acest cod.");
+                _logger.LogError("Nu exista cereri în stadiul 'Investigare' cu acest cod.");
             }
         }
 
@@ -301,6 +314,13 @@ using System.Collections.Generic;
         private void RezolvareProblemaMasina(Mecanic mecanic)
         {
             mecanic.RezolvaProblemaMasina(cereriRezolvare);
+            SalvareCereriRezolvare();
+        }
+        
+        private void FaCerere(Administrator administrator)
+        {
+            administrator.AdaugaCerereRezolvare(cereriRezolvare);
+            SalvareCereriRezolvare();
         }
 
         // Adaugare utilizator
@@ -345,18 +365,51 @@ using System.Collections.Generic;
             }
         }
 
-        // Salvarea utilizatorilor în fișier
+        // Salvarea utilizatorilor în fisier
         private void SalvareUtilizatori()
         {
             FileManager fileManager = new FileManager(filePath);
             fileManager.SaveToFile(utilizatori);
         }
 
-        // Încărcarea utilizatorilor din fișier
+        // Încărcarea utilizatorilor din fisier
         private void IncarcareUtilizatori()
         {
             FileManager fileManager = new FileManager(filePath);
             utilizatori = fileManager.LoadFromFile<Utilizator>();
             Console.WriteLine($"S-au incarcat {utilizatori.Count} utilizatori.");
         }
+        
+        private void SalvareCereriRezolvare()
+        {
+            string filePathRezolvare = "cereriRezolvare.json";
+            FileManager fileManager = new FileManager(filePathRezolvare);
+            fileManager.SaveToFile(cereriRezolvare);
+            Console.WriteLine($"Au fost salvate {cereriRezolvare.Count} cereri de rezolvare.");
+        }
+
+        private void IncarcareCereriRezolvare()
+        {
+            string filePathRezolvare = "cereriRezolvare.json";
+            FileManager fileManager = new FileManager(filePathRezolvare);
+            cereriRezolvare = fileManager.LoadFromFile<CerereRezolvare>();
+            Console.WriteLine($"S-au incarcat {cereriRezolvare.Count} cereri de rezolvare.");
+        }
+
+        public void SalvareCereriPieseAuto()
+        {
+            string filePathPieseAuto = "cereriPieseAuto.json";
+            FileManager fileManager = new FileManager(filePathPieseAuto);
+            fileManager.SaveToFile(cereriPieseAuto);
+            Console.WriteLine($"Au fost salvate {cereriPieseAuto.Count} cereri de piese auto.");
+        }
+
+        private void IncarcareCereriPieseAuto()
+        {
+            string filePathPieseAuto = "cereriPieseAuto.json";
+            FileManager fileManager = new FileManager(filePathPieseAuto);
+            cereriPieseAuto = fileManager.LoadFromFile<CererePieseAuto>();
+            Console.WriteLine($"S-au incarcat {cereriPieseAuto.Count} cereri de piese auto.");
+        }
+
     }
