@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
         // Lista de utilizatori
         static List<Utilizator> utilizatori = new List<Utilizator>();
-        static string filePath = "utilizatori.json";  // Calea fișierului cu utilizatori
+        static string filePath = "utilizatori.json";  // Calea fisierului cu utilizatori
 
         // Lista de cereri
         static List<CerereRezolvare> cereriRezolvare = new List<CerereRezolvare>();
@@ -21,8 +21,10 @@ using System.Collections.Generic;
         
         public void Run()
         {
-            // Încărcarea utilizatorilor din fișier
+            // incarcarea utilizatorilor din fisier
             IncarcareUtilizatori();
+			IncarcareCereriRezolvare();
+            IncarcareCereriPieseAuto();
 
             bool running = true;
 
@@ -71,7 +73,7 @@ using System.Collections.Generic;
 
             if (utilizator != null)
             {
-                // Console.WriteLine($"Logare reusita! Bine ati revenit, {utilizator.Nume} {utilizator.Prenume}.");
+                
                 _logger.LogInformation($"Logare reusita! Bine ati revenit, {utilizator.Nume} {utilizator.Prenume}.");
                 
                 // Meniu diferit pentru Administrator și Mecanic
@@ -88,7 +90,7 @@ using System.Collections.Generic;
             }
             else
             {
-                //Console.WriteLine("Email sau parola incorecta. Incercati din nou.");
+                
                 _logger.LogError("Email sau parola incorecta. Incercati din nou.");
             }
         }
